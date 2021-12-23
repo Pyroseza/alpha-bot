@@ -19,7 +19,7 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
         self.config = dict()
         self.config['debug'] = kwargs.get("debug", False)
         self.config['store_file'] = kwargs.get("store_file",'cheese_store.json')
-        self.config['cheese_weight'] = kwargs.get("cheese_weight", 30)
+        self.config['cheese_weight'] = kwargs.get("cheese_weight", 10)
         self.cheese_weight = (100 - self.config['cheese_weight'], 100)
         #Emoji Storage in Unicode
         self.emojis = dict()
@@ -28,7 +28,7 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
         self.emojis['thumbdown_emoji'] = u"\U0001F44E"
         #Timer between cheese drops
         self.last_cheese = dt.utcnow()
-        self.cooldown = 30        
+        self.cooldown = 300
         #Initialize the score memory
         self.scores_store = self.load_memory()
         #Warm up the randomizer
@@ -77,6 +77,7 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
                 and msg.id == reaction.message.id \
                 and str(reaction.emoji) == self.emojis['cheese_emoji']
         message_store = ""
+        reaction = None
         try:
             reaction, user = await client.wait_for('reaction_add', timeout=60.0, check=check)
             await reaction.clear()
@@ -85,6 +86,7 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
             message_store += f"{self.emojis['thumbup_emoji']} {user} collected the cheese!"
             return message_store
         except asyncio.TimeoutError:
+            await reaction.clear()
             message_store += f"{self.emojis['thumbdown_emoji']} nobody collected the cheese"
             return message_store
 
@@ -92,6 +94,9 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
     async def on_message(self, msg: Message):
         if msg.author.bot or isinstance(msg.channel, DMChannel):
             # Ignore DM or mesage from a bot
+            return
+        if "cheese" in msg.content.lower():
+            await msg.channel.send(f"No {self.emojis['cheese_emoji']} for you!")
             return
         client = self.client
         chance_result = random.choices(

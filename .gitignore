@@ -3,3 +3,4 @@
 # ignore venv
 .venv
 __pycache__
+cheese_store.bkp
