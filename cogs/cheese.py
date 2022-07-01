@@ -208,14 +208,14 @@ class Cheese(commands.Cog, name="Cheese"):
         aliases=["db"],
     )
     @admin_check
-    async def debug(self, ctx, debug: bool):
+    async def debug(self, ctx, debug: bool = None):
         """Toggle debug"""
-        await self.toggle_debug(debug)
+        if debug is not None:
+            await self.toggle_debug(debug)
         if self.debug:
             await ctx.send("Debug enabled")
         else:
             await ctx.send("Debug disabled")
-        return True
 
     @cheese.command(
         name="cooldown",
