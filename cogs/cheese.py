@@ -24,7 +24,7 @@ def admin_check(func):
     return wrapped
 
 class Cheese(commands.Cog, name="Cheese"):
-    u""" All things Cheese "\U0001F9C0"! """
+    u""" All things Cheese! """
 
     def __init__(self, client, **kwargs):
         self.client = client
@@ -40,9 +40,8 @@ class Cheese(commands.Cog, name="Cheese"):
         #Emoji Storage in Unicode
         self.emojis = dict()
         self.emojis["cheese"] = u"\U0001F9C0"
-        self.emojis["thumbup"] = u"\U0001F44D"
-        self.emojis["thumbdown"] = u"\U0001F44E"
-        self.emojis["sad"] = u"\U0001F61E"
+        self.emojis["good"] = u"\U0001F603"
+        self.emojis["bad"] = u"\U0001F44E"
         self.emojis["hands"] = u"\U0001F64C"
         self.last_cheese = dt.utcnow()
         self.max_cooldown = 120
@@ -120,7 +119,7 @@ class Cheese(commands.Cog, name="Cheese"):
         message = random.choice(self.messages)
         await msg.channel.send(message)
         await msg.add_reaction(self.emojis['cheese'])
-        await msg.channel.send(await self.check_reaction(client, msg))
+        await self.check_reaction(client, msg)
         self.last_cheese = dt.utcnow()
 
     async def check_reaction(self, client: Client, msg: Message):
@@ -130,21 +129,22 @@ class Cheese(commands.Cog, name="Cheese"):
         reaction = None
         try:
             reaction, user = await client.wait_for('reaction_add', timeout=self.timeout, check=check)
-            await reaction.clear()
-            message_store += f"{self.emojis['thumbup']} {user} collected the {self.emojis['cheese']}!"
+            await msg.clear_reactions()
+            txt = f"{self.emojis['good']} {user} collected the {self.emojis['cheese']}!"
+            await msg.channel.send(txt)
             jackpot = random.choices([False, True], cum_weights=(99, 100))[0]
-            self.client.log.debug(f"{lottery = }")
+            self.client.log.debug(f"{jackpot = }")
             if jackpot:
                 self.scores[str(user.id)] += self.jackpot_amount
-                message_store += f"{self.emojis['hands']} JACKPOT! {self.jackpot_amount} {self.emojis['cheese']} for you! {self.emojis['hands']}"
+                txt = f"{self.emojis['hands']} JACKPOT! {self.jackpot_amount} {self.emojis['cheese']} for you! {self.emojis['hands']}"
+                await msg.channel.send(txt)
             else:
                 self.scores[str(user.id)] += 1
             await self.save_memory()
-            return message_store
         except asyncio.TimeoutError:
-            await reaction.clear()
-            message_store += f"{self.emojis['thumbdown']} nobody collected the {self.emojis['cheese']}  {self.emojis['sad']}"
-            return message_store
+            await msg.clear_reactions()
+            txt = f"{self.emojis['bad']} nobody collected the {self.emojis['cheese']}"
+            await msg.channel.send(txt)
 
     @commands.Cog.listener()
     async def on_message(self, msg: Message):
