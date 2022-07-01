@@ -43,12 +43,13 @@ class Cheese(commands.Cog, name="Cheese"):
         self.emojis["thumbup"] = u"\U0001F44D"
         self.emojis["thumbdown"] = u"\U0001F44E"
         self.emojis["sad"] = u"\U0001F61E"
-        #Timer between cheese drops
+        self.emojis["hands"] = u"\U0001F64C"
         self.last_cheese = dt.utcnow()
         self.max_cooldown = 120
         self.cooldown = self.config.get("cooldown", self.max_cooldown)
         self.max_timeout = 60.0
         self.timeout = self.config.get("timeout", self.max_timeout)
+        self.jackpot_amount = self.config.get("jackpot", 10)
         #Initialize the score memory
         self.scores = self.load_memory()
         #Warm up the randomizer
@@ -128,11 +129,17 @@ class Cheese(commands.Cog, name="Cheese"):
         message_store = ""
         reaction = None
         try:
-            reaction, user = await client.wait_for('reaction_add', timeout=60.0, check=check)
+            reaction, user = await client.wait_for('reaction_add', timeout=self.timeout, check=check)
             await reaction.clear()
-            self.scores[str(user.id)] += 1
-            await self.save_memory()
             message_store += f"{self.emojis['thumbup']} {user} collected the {self.emojis['cheese']}!"
+            jackpot = random.choices([False, True], cum_weights=(99, 100))[0]
+            self.client.log.debug(f"{lottery = }")
+            if jackpot:
+                self.scores[str(user.id)] += self.jackpot_amount
+                message_store += f"{self.emojis['hands']} JACKPOT! {self.jackpot_amount} {self.emojis['cheese']} for you! {self.emojis['hands']}"
+            else:
+                self.scores[str(user.id)] += 1
+            await self.save_memory()
             return message_store
         except asyncio.TimeoutError:
             await reaction.clear()
