@@ -28,7 +28,7 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
         self.emojis['thumbdown_emoji'] = u"\U0001F44E"
         #Timer between cheese drops
         self.last_cheese = dt.utcnow()
-        self.cooldown = 300
+        self.cooldown = 120
         #Initialize the score memory
         self.scores_store = self.load_memory()
         #Warm up the randomizer
