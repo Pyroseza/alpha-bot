@@ -1,0 +1,15 @@
+{
+    "admin": 0,
+    "debug": true,
+    "chance_weight": 10,
+    "cooldown": 120,
+    "messages": [
+        "A wild cheese appeared!",
+        "Relax. Just take it cheesy.",
+        "Say cheese!",
+        "It's a gouda sign.",
+        "Life's so gouda.",
+        "It's really gouda to have you here.",
+        "Stay cheesy!"
+    ]
+}

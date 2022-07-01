@@ -1,6 +1,8 @@
 *config.json
 *_store.json
+*_store.bkp
 # ignore venv
 .venv
 __pycache__
-cheese_store.bkp
+*scores.json
+*scores.bkp

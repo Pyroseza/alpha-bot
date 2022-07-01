@@ -1,7 +1,7 @@
 from discord.ext import commands
 
 
-class AlphaCtx(commands.Context):
+class Context(commands.Context):
     @property
     def session(self):
         return self.bot.session

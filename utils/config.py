@@ -4,16 +4,15 @@ from os import path
 
 class Config(dict):
 
-    def __init__(self, filename='config.json', **kwargs):
+    def __init__(self, filename="config.json", **kwargs):
         self.conf_file = filename
-        self.live = kwargs.get('live', False)
-        self.no_template = kwargs.get('no_template', False)
+        self.live = kwargs.get("live", False)
+        self.no_template = kwargs.get("no_template", False)
         self.template = """{
             "token": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
             "main_guild": "xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
             "admin_roles": [0],
-            "prefix": "alpha",
-            "cheese_weight": 30
+            "prefix": "keryx",
         }"""
         self.load()
 
@@ -42,7 +41,7 @@ class Config(dict):
             self.save()
 
     def save(self):
-        with open(self.conf_file, 'w') as conf:
+        with open(self.conf_file, "w") as conf:
             json.dump(self.copy(), conf)
 
     def get(self, key, default=None, /):

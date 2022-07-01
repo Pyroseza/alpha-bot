@@ -40,7 +40,7 @@ class myHelpCommand(HelpCommand):
             )
         if footer:
             embed.set_footer(
-                text='Use alpha help <command/category> for more information.'
+                text='Use bot help <command/category> for more information.'
             )
         await destination.send(embed=embed)
 
@@ -128,7 +128,7 @@ class Help(commands.Cog):
         )
 
     async def cog_check(self, ctx):
-        return self.client.user_is_admin(ctx.author)
+        return ctx.author.administrator
 
     def cog_unload(self):
         self.client.get_command('help').hidden = False

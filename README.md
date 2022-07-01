@@ -1,15 +1,15 @@
-# Alphabet Discord Bot
+# Keryx Discord Bot
 
 ## Requirements
-- [docker-ce 17.12.0+](https://docs.docker.com/get-docker/)
-- [docker-compose 1.18+](https://docs.docker.com/compose/install/)
+- [docker-ce 20.10.17+](https://docs.docker.com/get-docker/)
+- [docker-compose 1.29.2+](https://docs.docker.com/compose/install/)
 
  **You must install these first before you can use the bot as intended**
 
 ## Steps to get the bot up and running on your local machine
 
 1. Clone this repo:
-    - `git clone https://github.com/AAADevs/alpha-bot.git`
+    - `git clone https://github.com/pyroseza/alpha-bot.git`
 
 2. Navigate into the project directory:
     - `cd alpha-bot`
@@ -25,6 +25,3 @@
     - Background (daemon):
       - `docker-compose up -d`
 
-## TODOs
-- Upgrade to Python 3.9
-- Change cheese cog to not expect a config from the client, have parameters passed in

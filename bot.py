@@ -1,5 +1,5 @@
 """
-Alpha Discord Bot
+Keryx Discord Bot
 
 This bot helps manage all necessary administration and
 automation for the Salty Bacon Gamers Discord server.
@@ -13,13 +13,13 @@ from aiohttp import ClientSession
 from discord.ext import commands
 from pathlib import Path
 from utils.config import Config
-from utils.context import AlphaCtx
+from utils.context import Context
 import json
 import logging
 import logging.config
 import os
 
-class AlphaBot(commands.Bot):
+class Bot(commands.Bot):
     """
     The main bot class where are the magic happens
     """
@@ -35,7 +35,7 @@ class AlphaBot(commands.Bot):
         self.log.info(f"{self.user} is in!")
 
 
-    async def get_context(self, message, *, cls=AlphaCtx):
+    async def get_context(self, message, *, cls=Context):
         return await super().get_context(message, cls=cls)
 
 
@@ -109,11 +109,11 @@ def setup_logging(filename='logging.json', env_key='LOG_CFG'):
 
 def main():
     setup_logging()
-    log = logging.getLogger(__name__)
-    # create the alphabot instance
-    bot_prefix = Config().get("prefix", "alpha")+" "
+    log = logging.getLogger("bot")
+    # create the bot instance
+    bot_prefix = Config().get("prefix", "keryx")+" "
     bot_Prefix = bot_prefix.capitalize()
-    bot = AlphaBot(
+    bot = Bot(
         command_prefix=commands.when_mentioned_or(bot_prefix, bot_Prefix),
         case_insensitive=True,
         log=log
@@ -130,13 +130,13 @@ def main():
         log.info('-'*30)
         log.info(f'Main guild: {bot.main_guild.name}')
         log.info('-'*30)
-        log.info('Alphabot started successfully')
+        log.info('Bot started successfully')
         return True
 
 
-    log.info('Alphabot ready')
+    log.info('Bot ready')
     bot.run()
-    log.info('Alphabot has terminated')
+    log.info('Bot has terminated')
 
 if __name__=="__main__":
     main()

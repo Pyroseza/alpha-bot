@@ -1,1 +1,1 @@
-docker-compose exec alphabot bash
+docker-compose exec bot bash

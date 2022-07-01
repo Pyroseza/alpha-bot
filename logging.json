@@ -2,7 +2,13 @@
   "version": 1,
   "disable_existing_loggers": false,
   "formatters": {
-    "simple": {
+   "thread": {
+       "format": "%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s"
+   },
+   "simple": {
+       "format": "%(levelname)s %(message)s"
+   },
+    "verbose": {
       "format": "%(asctime)s - %(levelname)s - %(filename)s:%(funcName)s:%(lineno)d - %(message)s"
     }
   },
@@ -10,19 +16,14 @@
     "console": {
       "class": "logging.StreamHandler",
       "level": "DEBUG",
-      "formatter": "simple",
+      "formatter": "verbose",
       "stream": "ext://sys.stdout"
     }
   },
   "loggers": {
-    "bot_logger": {
-      "level": "DEBUG",
-      "handlers":  ["console"],
-      "propagate": false
+    "bot": {
+      "handlers": ["console"],
+      "level": "INFO"
     }
-  },
-  "root": {
-    "level": "INFO",
-    "handlers": ["console"]
   }
 }
